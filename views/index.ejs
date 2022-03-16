@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello boys</title>
+    <style>
+        form {
+            background-color: aqua;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-send-box {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>This is my SOKET-IO practice</h1>
+    <form>
+        <div class="chats">
+            <p>hi</p>
+            <p>hi</p>
+            <p>hi</p>
+        </div>
+        <div class="chat-send-box">
+            <input type="text"/>
+            <input type="button" value="submit"/>
+        </div>
+    </form>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+    <script>
+        const form = document.querySelector('form');
+        const chats =document.querySelector('.chats')
+
+        const socket = io('<%= process.env.APP_URL %>');
+
+        // socket.on("new_message",(e)=>{
+        //     console.log(JSON.stringify(e))
+        // })
+        socket.on("new_message", data =>{
+            console.log(data)
+            chats.innerHTML="<p>hello</p>"
+        });
+        
+        
+        form.addEventListener('click',(e)=>{
+            e.preventDefault();
+            console.log(e.target.value);
+           
+        })
+    </script>
+</body>
+</html>
