@@ -23,21 +23,22 @@
 <body>
     
     <h1>This is my SOKET-IO practice</h1>
-    <form>
+    <form >
         <div class="chats">
             <p>hi</p>
             <p>hi</p>
             <p>hi</p>
         </div>
         <div class="chat-send-box">
-            <input type="text"/>
-            <input type="button" value="submit"/>
+            <input id="message" name="message" type="text"/>
+            <input type="submit" value="submit"/>
         </div>
     </form>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script>
         const form = document.querySelector('form');
         const chats =document.querySelector('.chats')
+        const message = document.querySelector('#message')
 
         const socket = io('<%= process.env.APP_URL %>');
 
@@ -46,14 +47,23 @@
         // })
         socket.on("new_message", data =>{
             console.log(data)
-            chats.innerHTML="<p>hello</p>"
+            
         });
+        socket.on('broadcast',(data)=>{
+            chats.innerHTML= chats.innerHTML + `<p>${data}</p>`
+        })
         
-        
-        form.addEventListener('click',(e)=>{
+        form.addEventListener('submit',async (e)=>{
             e.preventDefault();
-            console.log(e.target.value);
            
+            await fetch('/',{
+                method : 'POST',
+                body :JSON.stringify({'message':message.value}),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            console.log(JSON.stringify({'message':message.value}));
         })
     </script>
 </body>
